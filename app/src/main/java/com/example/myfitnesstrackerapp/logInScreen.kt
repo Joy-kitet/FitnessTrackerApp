@@ -24,6 +24,9 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun logInScreen(){
+
+
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -60,6 +63,10 @@ fun logInScreen(){
         Spacer(modifier = Modifier.height(32.dp))
 
         Text(text = "or sign in with")
+
+
+
     }
+
 
 }

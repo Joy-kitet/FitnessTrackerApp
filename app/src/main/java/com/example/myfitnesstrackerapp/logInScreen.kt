@@ -1,5 +1,6 @@
 package com.example.myfitnesstrackerapp
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,18 +13,30 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.node.ModifierNodeElement
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 
 @Composable
 fun logInScreen(){
+
+    var email by remember {
+        mutableStateOf("")
+    }
+
+
+    var password by remember {
+        mutableStateOf("")
+    }
 
 
 
@@ -41,18 +54,25 @@ fun logInScreen(){
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedTextField(value = "", onValueChange = {}, label = {
+        OutlinedTextField(value = "email", onValueChange = {
+        email = it
+
+        }, label = {
             Text(text = "Email Address")
         })
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedTextField(value = "", onValueChange = {}, label = {
+        OutlinedTextField(value = "password", onValueChange = {
+            password = it
+        }, label = {
             Text(text = "Password")
-        })
+        }, visualTransformation = PasswordVisualTransformation())
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = { }) {
+        Button(onClick = {
+            Log.i("Credential", "Email: $email Password: $password")
+        }) {
             Text(text = "Login")
         }
         Spacer(modifier = Modifier.height(32.dp))
@@ -62,7 +82,9 @@ fun logInScreen(){
         })
         Spacer(modifier = Modifier.height(32.dp))
 
-        Text(text = "or sign in with")
+        Text(text = "or sign in with", modifier = Modifier.clickable{
+
+        })
 
 
 

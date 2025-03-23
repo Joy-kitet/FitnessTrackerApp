@@ -1,7 +1,8 @@
 package com.example.myfitnesstrackerapp
 
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.*
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.foundation.lazy.*
@@ -10,10 +11,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.res.colorResource
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.*
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -21,16 +23,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.unit.dp
+import androidx.compose.material3.Icon
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.clip
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -97,9 +108,31 @@ fun PreviewCustomTopAppBar() {
     CustomTopAppBar(userName = "John")
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomBottomBar() {
+fun CustomBottomNavigation() {
+    var selectedIndex by remember { mutableStateOf(0) }
+
+    NavigationBar(
+        containerColor = Color.Black // Background color of BottomNavigation
+    ) {
+        listOf("Home", "Search", "Profile").forEachIndexed { index, title ->
+            NavigationBarItem(
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Home, // Change to your desired icon
+                        contentDescription = title,
+                        tint = if (index == selectedIndex) Color.White else Color.Gray.copy(alpha = 0.6f) // Manual color control
+                    )
+                },
+                selected = selectedIndex == index,
+                onClick = { selectedIndex = index }
+            )
+        }
+    }
+}
+
+/*fun CustomBottomBar() {
+    var selectedIndex by remember { mutableStateOf(0) }
     BottomAppBar(
         modifier = Modifier
             .fillMaxWidth()
@@ -114,6 +147,8 @@ fun CustomBottomBar() {
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            
+            val BottomNavigationItemDefaults = null
             BottomNavigationItem(
                 selected = true,
                 onClick = { /* TODO: Handle click */ },
@@ -127,6 +162,8 @@ fun CustomBottomBar() {
                     selectedIconColor = Color.White,
                     unselectedIconColor = Color.Gray
                 )
+
+
             )
             BottomNavigationItem(
                 selected = false,
@@ -142,6 +179,8 @@ fun CustomBottomBar() {
                     selectedIconColor = Color.White,
                     unselectedIconColor = Color.Gray
                 )
+
+
             )
 
             BottomNavigationItem(
@@ -157,6 +196,8 @@ fun CustomBottomBar() {
                     selectedIconColor = Color.White,
                     unselectedIconColor = Color.Gray
                 )
+
+
             )
 
             BottomNavigationItem(
@@ -172,11 +213,13 @@ fun CustomBottomBar() {
                     selectedIconColor = Color.White,
                     unselectedIconColor = Color.Gray
                 )
+
+
             )
 
         }
     }
-}
+}*/
 
 @Composable
 fun BottomNavigationItem(selected: Boolean, onClick: () -> Unit, icon: @Composable () -> Unit, colors: Any) {
@@ -186,10 +229,8 @@ fun BottomNavigationItem(selected: Boolean, onClick: () -> Unit, icon: @Composab
 @Preview
 @Composable
 fun PreviewCustomBottomBar() {
-    CustomBottomBar()
+    
 }
-
-
 
 @Composable
 fun HomeScreen(workOutCategories: List<String>) {
@@ -209,129 +250,144 @@ fun HomeScreen(workOutCategories: List<String>) {
         }
         Spacer(Modifier.size(20.dp))
 
-        Box(Modifier.padding(horizontal =20.dp)
-            .clip(RoundedCornerShape(percent 10))
-            .background(colorResource(id = R.color.light_purple))
-        ){
+        Box(
+            Modifier
+                .padding(horizontal = 20.dp)
+                .clip(RoundedCornerShape(percent = 10))
+                .background(colorResource(id = R.color.light_purple))
+        ) {
             Column(
-                Modifier.padding(horizontal= 20.dp, vertical =22.dp)
-
-
-            )
-            {
+                Modifier.padding(horizontal = 20.dp, vertical = 22.dp)
+            ) {
                 Row(
-                    Modifier.fillmaxWidth(),
+                    Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.Centervertically
-                ){
-                    Text(text: "loose Belly fat",
-                    color =Color.Black,
-                    fontWeight =fontWeight.Bold
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Loose Belly Fat",
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold,
                         fontSize = 38.sp
                     )
                     Button(
-                        shape = RoundCornerShape(20.dp),
+                        shape = RoundedCornerShape(20.dp),
                         contentPadding = PaddingValues(6.dp),
                         onClick = {},
-                        colors = ButtonDefaults.textButtonColors(
-                            backgroudColor = colorResource(id = R.color.purple_200)
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = colorResource(id = R.color.purple_200)
                         )
-                    )
-                    {
-                        Text(text: "Middle level", color= Color.White, fontSize= 18.sp)
-
+                    ) {
+                        Text(text = "Middle level", color = Color.White, fontSize = 18.sp)
                     }
                 }
                 Spacer(Modifier.size(15.dp))
                 Box(
-                    Modifier.clip(RoundedCornerShape(18.dp)
-
-                    )
+                    Modifier
+                        .clip(RoundedCornerShape(18.dp))
                         .background(Color.White)
-                )
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Spacer(modifier = Modifier.weight(0.5f))
 
-        }{
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            )
-            {
-                Spacer(modifier=Modifier.weight(0.5))
+                        Image(
+                            painter = painterResource(id = R.drawable.imagelogo),
+                            contentDescription = "dumbbell",
+                            modifier = Modifier.size(200.dp)
+                        )
+                    }
+                }
+                Spacer(Modifier.size(12.dp))
 
-                Image(
-                    painter = painterResource(id = R.drawable.dumbells),contentDescription ="dumbell",
-                    modifier = Modifier.size(200.dp)
-                )
-            }
-            }
-            Spacer(Modifier.size(12.dp))
-
-            Row(
-                Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Icon(imagevector=Icons.Outlined.Schedule,
-                    contentDescription = "timer",
-                    tint =color.Black
+                Row(
+                    Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Schedule,
+                        contentDescription = "timer",
+                        tint = Color.Black
                     )
-                Text("40 minutes",
-                    fontSize =14.dp,
-                    color = Color.Black,
-                    modifier = Modifier.padding(start = 5.dp))
-            }
-            Spacer(Modifier.weight(14))
-
-            TextButton[colors = ButtonDefaults.textButtonColors(
-                backgroundColor = Color.Transparent
-            ),
-            (onclick ={/*TODO*/}){
-                    Text("Start",
-                fontSize = 20.sp,
-                fontWeight.Bold,
-                color = Color.Black
+                    Text(
+                        text = "40 minutes",
+                        fontSize = 14.sp,
+                        color = Color.Black,
+                        modifier = Modifier.padding(start = 5.dp)
                     )
-                Icon(
-                    imagevector = Icons.filled.Arrowforward,
-                    contentDescription = "timer",
-                    tint= Color.Black
-                )
-    }
-          Spacer(Modifier.size(20.dp))
+                }
+                Spacer(Modifier.weight(1f))
 
-          Box(
-              Modifier.fillMaxWidth()
-                  .padding(horizontal= 20.dp)
-                  .clip(RoundedCornerShape(20.dp))
-                  .background(ColorResource(if = R.color.orange))
-          )
-            {
-              Row(
-                  Modifier.fillMaxWidth()
-                      .padding(20.dp)
-                  verticalAlignment = Alignment.CenterVertically,
-                  horizontalArrangement = Arrangement.SpaceBetween
-              ){
-                  Box(
-                      contentAlignment =Alignment.Center,
+                TextButton(
+                    onClick = { /* TODO */ },
+                    colors = ButtonDefaults.textButtonColors(
+                        contentColor = Color.Black
+                    )
+                ) {
+                    Text(
+                        text = "Start",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    )
+                    Icon(
+                        imageVector = Icons.Filled.ArrowForward,
+                        contentDescription = "Start",
+                        tint = Color.Black
+                    )
+                }
 
-                  ){
-                      CircularProgressIndicator(
-                          Modifier.size(75.dp),
-                          color =Color.Black,
-                          progress = 0.56f,
-                          Strokewidth = 8.dp
-                      )
-                      Text(text = "56%",
-                          color = Color.Black,
-                          fontWeight = fontWeight.Bold,
-                          fontSize = 25.sp)
-                  }
-              }
-               Column{
-                   Text(text: "Great!", color =Color.Black,fontWeight= fontWeight.Bold, fontSize = 20.sp)
-                   Text(text: "You have lost 70% of your calories intake!", color =Color.Grey, fontSize = 16.sp)
-               }
+                Spacer(Modifier.size(20.dp))
+
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(colorResource(id = R.color.orange))
+                ) {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Box(
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(75.dp),
+                                color = Color.Black,
+                                progress = 0.56f,
+                                strokeWidth = 8.dp
+                            )
+                            Text(
+                                text = "56%",
+                                color = Color.Black,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 25.sp
+                            )
+                        }
+                        Column {
+                            Text(
+                                text = "Great!",
+                                color = Color.Black,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp
+                            )
+                            Text(
+                                text = "You have lost 70% of your calorie intake!",
+                                color = Color.Gray,
+                                fontSize = 16.sp
+                            )
+                        }
+                    }
+                }
             }
         }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -358,7 +414,7 @@ fun WorkOutType(workout: String) {
             .background(backgroundColor)
             .padding(6.dp)
     ) {
-        Text(text = workout, color = textColor, fontSize=18.sp)
+        Text(text = workout, color = textColor, fontSize = 18.sp)
     }
 }
 
